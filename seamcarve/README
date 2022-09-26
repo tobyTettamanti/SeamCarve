@@ -1,0 +1,17 @@
+Final Hand-in
+
+Design Choices: There are three main components in my design to determine the lowest cost seam curve. The first is to create
+a 2D array (table) of pixel values. This is achieved by calculating the average disparity of color between the neighboring pixels,
+where the disparity is then squared. A pixel with colors R = 0 G = 255 B = 255 and with a neighboring pixel with colors R = 255 G = 255 B = 255
+has a higher importance than a pixel with colors R = 0 G = 255 B = 255 and with a neighboring pixel with colors R = 80 G = 170 B = 170.
+
+The second main component is creating a 2D array of total pixel costs and directions. The pixel costs table at each entry adds the value of that
+entry in the values table and adds either the cost entry to the bottom-left, bottom, or bottom-right of it, whichever is the lowest. By storing these values
+in a 2D array, we are able to use dynamic programming and prevent big-O from being exponential (3^n), as we avoid repeating the same calculations. At the same time,
+a directions table is being filled out to record which of the three cost entries below are used so that we can easily create the lowest cost seam curve. For the direction
+table, a value of -1 means the seam curve should move one down and one to the left, a value of 1 means the seam curve should move one down and one to the right, and a value
+of 0 means the seam curve should just move one down.
+
+The last component is creating the lowest cost seam. First, we find the smallest total cost at the top (index = 0) of the costs table, and starting there move down using
+the direction table either 1 to the left, 1 to the right, or straight down the middle until we reach the bottom. This information is stored in an array of ints (the first entry
+is the index of the top pixel, and the last entry is the index of the last pixel) and then returned.
